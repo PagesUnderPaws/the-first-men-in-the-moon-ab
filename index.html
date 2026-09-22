@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The First Men in the Moon — A/B Edition</title>
+<style>
+body{font-family:Georgia,serif;background:#f4f0e6;color:#1f1e1a;margin:0}
+main{max-width:760px;margin:auto;padding:48px 20px}
+section{background:#fffaf0;border:1px solid #cfc7b7;padding:28px;margin:22px 0}
+h1{font-size:2.6rem;font-weight:500;margin:.2em 0}
+h2{font-weight:500}
+button{font:inherit;padding:12px 18px;margin:8px 8px 8px 0;border:1px solid #333;background:#313b4a;color:#fff;cursor:pointer}
+button.secondary{background:transparent;color:#313b4a}
+.small{color:#6b675f;font-size:.95rem}
+.hidden{display:none}
+.ending{white-space:pre-wrap;line-height:1.7;background:#fffdf8;border:1px solid #d8d1c2;padding:24px}
+textarea{width:100%;min-height:120px;font:inherit}
+</style>
+</head>
+<body>
+<main>
+<section id="home">
+<p class="small">A reader experiment</p>
+<h1>The First Men in the Moon</h1>
+<p><strong>The A/B Edition</strong></p>
+<p>This edition contains two possible final acts. Read one first without knowing which is Wells's original, record your reaction, then read the other and compare.</p>
+<button onclick="show('choose')">Begin</button>
+</section>
+
+<section id="choose" class="hidden">
+<h2>Which ending will you read first?</h2>
+<p>Choose A or B. The labels reveal nothing.</p>
+<button onclick="first='A';showEnding('A')">Ending A</button>
+<button onclick="first='B';showEnding('B')">Ending B</button>
+</section>
+
+<section id="endingA" class="hidden">
+<h2>Ending A</h2>
+<div class="ending">ENDING A TEXT GOES HERE.
+
+Later, this will contain either Wells's original final act or your alternative version.</div>
+<button onclick="afterEnding('A')">I finished Ending A</button>
+</section>
+
+<section id="endingB" class="hidden">
+<h2>Ending B</h2>
+<div class="ending">ENDING B TEXT GOES HERE.
+
+Later, this will contain either Wells's original final act or your alternative version.</div>
+<button onclick="afterEnding('B')">I finished Ending B</button>
+</section>
+
+<section id="firstReaction" class="hidden">
+<h2>Your first reaction</h2>
+<p>Before reading the other ending:</p>
+<p>How satisfying was it?</p>
+<select id="score"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<p>Do you think this was Wells's original?</p>
+<select id="guess"><option>Yes</option><option>No</option><option>Unsure</option></select>
+<p>Why?</p>
+<textarea placeholder="Optional"></textarea><br>
+<button onclick="readSecond()">Continue to the other ending</button>
+</section>
+
+<section id="compare" class="hidden">
+<h2>Now compare them</h2>
+<p>Which ending do you prefer overall?</p>
+<button onclick="preferred='A';show('reveal')">A</button>
+<button onclick="preferred='B';show('reveal')">B</button>
+<button class="secondary" onclick="preferred='Neither';show('reveal')">Neither / no preference</button>
+</section>
+
+<section id="reveal" class="hidden">
+<h2>The reveal</h2>
+<p><strong>This is where the site will eventually tell the reader which ending Wells actually wrote.</strong></p>
+<p>We will only fill this in after the final versions are finished and the A/B labels are assigned.</p>
+<hr>
+<h2>Your reasoning</h2>
+<p>This is where your explanation of what you thought did not work in Wells's ending, what you preserved, and what you changed will go.</p>
+<hr>
+<h2>Reader opinions</h2>
+<p>Later, this can show voting results and selected anonymous comments from readers.</p>
+</section>
+</main>
+
+<script>
+let first=null, secondSeen=false, preferred=null;
+function hideAll(){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'))}
+function show(id){hideAll();document.getElementById(id).classList.remove('hidden')}
+function showEnding(letter){show(letter==='A'?'endingA':'endingB')}
+function afterEnding(letter){
+  if(letter===first && !secondSeen){show('firstReaction')}
+  else {secondSeen=true;show('compare')}
+}
+function readSecond(){
+  secondSeen=true;
+  showEnding(first==='A'?'B':'A')
+}
+</script>
+</body>
+</html>
