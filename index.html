@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The First Men in the Moon — A/B Edition</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">The First Men in the Moon — A/B Edition</div>
+    <nav class="nav"><button class="ghost" id="homeBtn" type="button">Home</button></nav>
+  </div>
+</header>
+
+<main>
+  <section id="home" class="app-screen active">
+    <h1>Two final acts. Read both before the reveal.</h1>
+    <p class="lede">This edition presents two versions of the final act of <em>The First Men in the Moon</em>. Read them one at a time, respond to each on its own terms, and only then find out which version is which.</p>
+    <div class="card">
+      <h2>How it works</h2>
+      <p>Choose whether you are reading here or from a printed copy. You will answer three short questions before beginning. The two final acts are presented in different orders so that the first ending is not always the same one.</p>
+      <p class="muted">Please do not search for the ending or skip ahead to the reveal if you want your response to remain blinded.</p>
+      <div class="actions">
+        <button id="startOnline" type="button">Read online</button>
+        <button id="startBook" class="secondary" type="button">I have the book</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="bookCode" class="app-screen">
+    <div class="progress">Printed book · Reader code</div>
+    <h2>Which code is printed in your copy?</h2>
+    <div class="card">
+      <p>Find the reader code printed in your book and select it below. The code only tells this site which final act appears first in your copy.</p>
+      <div class="actions code-buttons">
+        <button type="button" data-book-code="Z">Z</button>
+        <button type="button" data-book-code="X">X</button>
+      </div>
+      <div class="actions"><button id="bookCodeBack" class="secondary" type="button">Back</button></div>
+    </div>
+  </section>
+
+  <section id="screening" class="app-screen">
+    <div class="progress">Step 1 of 7 · Before you read</div>
+    <h2>Before you begin</h2>
+    <form id="screeningForm" class="card" novalidate>
+      <fieldset class="q"><legend>1. Before today, had you read the published novel?</legend><div class="choices"><label><input type="radio" name="readBefore" value="yes">Yes</label><label><input type="radio" name="readBefore" value="no">No</label></div></fieldset>
+      <fieldset class="q"><legend>2. Before beginning this experiment, did you remember the published ending well enough that you expected you would recognise it if you saw it?</legend><div class="choices"><label><input type="radio" name="recognise" value="yes">Yes</label><label><input type="radio" name="recognise" value="no">No</label></div></fieldset>
+      <fieldset class="q"><legend>3. Before beginning this experiment, did you already know what distinguishes the two final acts in this edition?</legend><div class="choices"><label><input type="radio" name="knowDifference" value="yes">Yes</label><label><input type="radio" name="knowDifference" value="no">No</label></div></fieldset>
+      <p id="screeningError" class="small warning hidden" role="alert">Please answer all three questions before continuing.</p>
+      <div class="actions"><button id="screeningBack" class="secondary" type="button">Back</button><button id="screeningContinue" type="button">Continue</button></div>
+    </form>
+  </section>
+
+  <section id="onlineReader" class="app-screen">
+    <div class="progress">Step 2 of 7 · Read the novel <span class="mode-tag">Online</span></div>
+    <div class="reader-shell">
+      <article id="onlineReaderText" class="reader"><p>Loading the novel…</p></article>
+      <div class="reader-nav">
+        <button id="readerPrev" class="secondary" type="button">Previous</button>
+        <span id="readerStatus" class="reader-status"></span>
+        <button id="readerNext" type="button">Next</button>
+      </div>
+    </div>
+    <p id="readerError" class="small warning hidden" role="alert"></p>
+  </section>
+
+  <section id="firstEndingOnly" class="app-screen">
+    <div class="progress">First final act</div>
+    <div class="reader-shell"><article id="firstEndingText" class="reader"></article></div>
+    <div class="actions"><button id="firstEndingDone" type="button">I’ve finished this ending</button></div>
+  </section>
+
+  <section id="bookFirst" class="app-screen">
+    <div class="progress">Step 2 of 7 · First final act <span class="mode-tag">Printed book</span></div>
+    <h2>Read the first final act in your book</h2>
+    <div class="card">
+      <p>Read the first final act in your copy. Stop at the divider before the second final act and return here.</p>
+      <div class="actions"><button id="bookFirstBack" class="secondary" type="button">Back</button><button id="bookFirstDone" type="button">I’ve finished the first final act</button></div>
+    </div>
+  </section>
+
+  <section id="survey1" class="app-screen">
+    <div class="progress">Step 3 of 7 · Your response to the first ending</div>
+    <h2>Your response</h2>
+    <form id="survey1Form" class="card" novalidate></form>
+  </section>
+
+  <section id="secondEnding" class="app-screen">
+    <div class="progress">Step 4 of 7 · Second final act <span class="mode-tag">Online</span></div>
+    <h2>Now read the other final act</h2>
+    <div class="reader-shell"><article id="secondEndingText" class="reader"><p>Loading…</p></article></div>
+    <div class="actions"><button id="secondEndingDone" type="button">I’ve finished this ending</button></div>
+  </section>
+
+  <section id="bookSecond" class="app-screen">
+    <div class="progress">Step 4 of 7 · Second final act <span class="mode-tag">Printed book</span></div>
+    <h2>Now read the second final act in your book</h2>
+    <div class="card">
+      <p>Continue to the second final act in your copy. When you finish it, return here before looking anything up about the endings.</p>
+      <div class="actions"><button id="bookSecondBack" class="secondary" type="button">Back</button><button id="bookSecondDone" type="button">I’ve finished the second final act</button></div>
+    </div>
+  </section>
+
+  <section id="survey2" class="app-screen">
+    <div class="progress">Step 5 of 7 · Your response to the second ending</div>
+    <h2>Your response</h2>
+    <form id="survey2Form" class="card" novalidate></form>
+  </section>
+
+  <section id="compare" class="app-screen">
+    <div class="progress">Step 6 of 7 · Compare the two endings</div>
+    <h2>Before the reveal</h2>
+    <form id="compareForm" class="card" novalidate>
+      <fieldset class="q"><legend>1. Which ending did you prefer overall?</legend><div class="choices"><label><input type="radio" name="preferred" value="first">First ending</label><label><input type="radio" name="preferred" value="second">Second ending</label><label><input type="radio" name="preferred" value="none">No preference</label></div></fieldset>
+      <fieldset class="q"><legend>2. Which ending do you think appeared in the published novel?</legend><div class="choices"><label><input type="radio" name="publishedGuess" value="first">First ending</label><label><input type="radio" name="publishedGuess" value="second">Second ending</label><label><input type="radio" name="publishedGuess" value="cant_choose">I can’t choose</label></div></fieldset>
+      <div class="q"><label>3. How confident are you in that answer?</label><div class="scale" id="confidenceScale"></div><div class="scale-note"><span>1 · not confident</span><span>9 · extremely confident</span></div></div>
+      <div class="q"><label for="whyPreferred">4. Optional: Why did you prefer that ending?</label><textarea id="whyPreferred" name="whyPreferred"></textarea><p class="small muted">Optional comments may contribute to an anonymous aggregate summary shown after the reveal.</p></div>
+      <p id="compareError" class="small warning hidden" role="alert">Please answer questions 1–3 before continuing. Question 4 is optional.</p>
+      <div class="actions"><button id="compareBack" class="secondary" type="button">Back</button><button id="compareContinue" type="button">Reveal the two endings</button></div>
+    </form>
+  </section>
+
+  <section id="reveal" class="app-screen">
+    <div class="progress">Step 7 of 7 · Reveal</div>
+    <div class="card reveal" id="revealText"></div>
+    <form id="postRevealForm" class="card" novalidate>
+      <div class="q"><label>1. How surprised were you by the reveal?</label><div class="scale" id="surpriseScale"></div><div class="scale-note"><span>1 · not at all</span><span>9 · extremely</span></div></div>
+      <fieldset class="q"><legend>2. Now that you know which ending was published, has your preference changed?</legend><div class="choices"><label><input type="radio" name="changed" value="yes">Yes</label><label><input type="radio" name="changed" value="no">No</label></div></fieldset>
+      <fieldset class="q hidden" id="newPreferenceWrap"><legend>Which do you prefer now?</legend><div class="choices"><label><input type="radio" name="newPreference" value="published">Published ending</label><label><input type="radio" name="newPreference" value="alternative">Alternative ending</label><label><input type="radio" name="newPreference" value="none">No preference</label></div></fieldset>
+      <p id="postRevealError" class="small warning hidden" role="alert"></p>
+      <div class="actions"><button id="postRevealContinue" type="button">See results</button></div>
+    </form>
+  </section>
+
+  <section id="results" class="app-screen">
+    <h2>Your results</h2>
+    <div class="card">
+      <div class="result-grid">
+        <div class="result-box"><span>Blindness</span><b id="blindnessOut">—</b></div>
+        <div class="result-box"><span>Reading mode</span><b id="modeOut">—</b></div>
+        <div class="result-box"><span>Read first</span><b id="orderOut">—</b></div>
+        <div class="result-box"><span>Preferred</span><b id="preferenceOut">—</b></div>
+        <div class="result-box"><span>Previously read the novel</span><b id="readBeforeOut">—</b></div>
+        <div class="result-box hidden" id="sequenceBox"><span>Book-reading sequence</span><b id="sequenceOut">—</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your comments</h2>
+      <h3>First ending</h3><div id="firstCommentOut" class="comment-quote muted">No comment entered.</div>
+      <h3>Second ending</h3><div id="secondCommentOut" class="comment-quote muted">No comment entered.</div>
+      <h3>Why you preferred that ending</h3><div id="preferenceCommentOut" class="comment-quote muted">No comment entered.</div>
+    </div>
+
+    <div class="card">
+      <h2>What readers are saying</h2>
+      <p><strong>AI-generated summary of reader responses</strong></p>
+      <p class="muted">This section will summarise anonymous pre-reveal comments once the shared response database is connected. It will not be generated from the post-reveal discussion.</p>
+    </div>
+
+    <div class="card">
+      <h2>Discussion</h2>
+      <p>Your anonymous discussion name on this browser is:</p>
+      <p class="moon-name" id="discussionName">—</p>
+      <p class="muted">The same browser will keep this name. There are no accounts, passwords or recovery codes, and the discussion name is not connected to your survey answers.</p>
+      <p class="muted">Shared discussion will appear here once its backend is connected.</p>
+    </div>
+  </section>
+</main>
+
+<footer>Text based on H. G. Wells’s 1901 George Newnes edition. Original illustrations by Claude Allin Shepperson (1901), public domain.</footer>
+<script src="script.js"></script>
+</body>
+</html>
