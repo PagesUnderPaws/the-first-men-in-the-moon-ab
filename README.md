@@ -1,5 +1,7 @@
 # The First Men in the Moon — A/B Edition
 
+Updated alternative ending: **v16**.
+
 Upload the **contents of this folder** to the root of the GitHub Pages repository. Keep the folder structure exactly as it is:
 
 - `index.html`
@@ -30,3 +32,9 @@ Survey data is saved only in the reader's browser. Shared response collection, a
 The Wells text is based on the cleaned 1901 George Newnes edition in the project files. Plain-text emphasis markers are rendered as italics, the known `(? battle)` transcription artefact is corrected to `battle`, and dash runs are normalised for browser display.
 
 The original Claude Allin Shepperson illustrations are public-domain images served from Wikimedia Commons using `Special:FilePath` URLs. `data/illustrations.json` records the image filenames, captions and source information.
+
+## Print copies
+The Home page includes a **Buy a copy** section for Amazon and Lulu. The buttons are intentionally disabled until the actual product pages exist; replace them with the live product URLs at publication.
+
+## Alternative ending length
+The alternative final act has been tightened to bring its reading burden much closer to the published Wells ending while preserving the different story and the Grand Lunar conversation.
