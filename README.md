@@ -38,3 +38,8 @@ The Home page includes a **Buy a copy** section for Amazon and Lulu. The buttons
 
 ## Alternative ending length
 The alternative final act has been tightened to bring its reading burden much closer to the published Wells ending while preserving the different story and the Grand Lunar conversation.
+
+
+## Chapter navigation
+
+Online readers have a compact chapter-jump bar at the top of the reading area. The existing Previous/Next controls remain at the bottom. During a final act, the jump bar shows only Chapters XXV and XXVI of the ending currently being read; it does not expose the other ending or any survey/reveal screen.

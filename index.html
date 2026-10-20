@@ -25,7 +25,6 @@
       <div class="actions">
         <button id="startOnline" type="button">Read online</button>
         <button id="startBook" class="secondary" type="button">I have the book</button>
-        <a class="button secondary" href="#buy">Buy a copy</a>
       </div>
     </div>
     <div class="card" id="buy">
@@ -67,6 +66,7 @@
   <section id="onlineReader" class="app-screen">
     <div class="progress">Step 2 of 7 · Read the novel <span class="mode-tag">Online</span></div>
     <div class="reader-shell">
+      <nav id="onlineChapterNav" class="chapter-jump" aria-label="Chapter navigation"></nav>
       <article id="onlineReaderText" class="reader"><p>Loading the novel…</p></article>
       <div class="reader-nav">
         <button id="readerPrev" class="secondary" type="button">Previous</button>
@@ -79,7 +79,10 @@
 
   <section id="firstEndingOnly" class="app-screen">
     <div class="progress">First final act</div>
-    <div class="reader-shell"><article id="firstEndingText" class="reader"></article></div>
+    <div class="reader-shell">
+      <nav id="firstEndingChapterNav" class="chapter-jump" aria-label="Chapter navigation"></nav>
+      <article id="firstEndingText" class="reader"></article>
+    </div>
     <div class="actions"><button id="firstEndingDone" type="button">I’ve finished this ending</button></div>
   </section>
 
@@ -101,7 +104,10 @@
   <section id="secondEnding" class="app-screen">
     <div class="progress">Step 4 of 7 · Second final act <span class="mode-tag">Online</span></div>
     <h2>Now read the other final act</h2>
-    <div class="reader-shell"><article id="secondEndingText" class="reader"><p>Loading…</p></article></div>
+    <div class="reader-shell">
+      <nav id="secondEndingChapterNav" class="chapter-jump" aria-label="Chapter navigation"></nav>
+      <article id="secondEndingText" class="reader"><p>Loading…</p></article>
+    </div>
     <div class="actions"><button id="secondEndingDone" type="button">I’ve finished this ending</button></div>
   </section>
 

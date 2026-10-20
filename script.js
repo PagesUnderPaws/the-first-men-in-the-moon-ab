@@ -79,6 +79,40 @@
     }));
   }
 
+  function renderNovelChapterNav(){
+    const nav=$('#onlineChapterNav');
+    if(!nav) return;
+    const buttons=novelSections.map((section,index)=>({section,index})).filter(x=>x.section.chapter!=='title').map(({section,index})=>{
+      const active=index===state.readerIndex ? ' active' : '';
+      const current=index===state.readerIndex ? ' aria-current="page"' : '';
+      const title=section.title ? ` title="Chapter ${section.chapter}: ${section.title.replace(/"/g,'&quot;')}"` : '';
+      return `<button type="button" class="${active.trim()}" data-reader-index="${index}"${current}${title}>${section.chapter}</button>`;
+    }).join('');
+    nav.innerHTML=`<span class="chapter-jump-label">Jump to chapter</span>${buttons}`;
+  }
+
+  function renderEndingChapterNav(navSelector,articleId,activeChapter='XXV'){
+    const nav=$(navSelector);
+    if(!nav) return;
+    nav.innerHTML=`<span class="chapter-jump-label">Jump to chapter</span>${['XXV','XXVI'].map(ch=>`<button type="button" class="${ch===activeChapter?'active':''}" data-ending-article="${articleId}" data-ending-nav="${nav.id}" data-ending-chapter="${ch}"${ch===activeChapter?' aria-current="page"':''}>${ch}</button>`).join('')}`;
+  }
+
+  function jumpToEndingChapter(articleId,navId,chapter){
+    const article=$('#'+articleId);
+    if(!article) return;
+    const heading=[...article.querySelectorAll('h2')].find(h=>h.textContent.trim().startsWith(chapter));
+    if(!heading) return;
+    const nav=$('#'+navId);
+    if(nav){
+      nav.querySelectorAll('button[data-ending-chapter]').forEach(btn=>{
+        const isCurrent=btn.dataset.endingChapter===chapter;
+        btn.classList.toggle('active',isCurrent);
+        if(isCurrent) btn.setAttribute('aria-current','page'); else btn.removeAttribute('aria-current');
+      });
+    }
+    heading.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
   async function startOnlineReading(){
     $('#readerError').classList.add('hidden');
     $('#readerError').textContent = '';
@@ -100,10 +134,12 @@
     const isEnding = i === totalNovel;
     if (isEnding) {
       $('#onlineReaderText').innerHTML = await loadEnding(state.order[0]);
+      renderEndingChapterNav('#onlineChapterNav','onlineReaderText','XXV');
       $('#readerStatus').textContent = 'First final act';
       $('#readerNext').textContent = 'I’ve finished this ending';
     } else {
       $('#onlineReaderText').innerHTML = novelSections[i].html;
+      renderNovelChapterNav();
       if (novelSections[i].chapter === 'title') $('#readerStatus').textContent = 'Title page';
       else $('#readerStatus').textContent = `Chapter ${novelSections[i].chapter} of XXIV`;
       $('#readerNext').textContent = 'Next';
@@ -150,8 +186,8 @@
     const err = $('#'+which+'SurveyError');
     if (missing || readAheadMissing) {
       err.textContent = readAheadMissing
-        ? 'Please answer the book-reading check and questions 1–3 before continuing. Question 4 is optional.'
-        : 'Please answer questions 1–3 before continuing. Question 4 is optional.';
+        ? 'Please answer the book-reading check and all three rating questions before continuing. The comments box is optional.'
+        : 'Please answer all three rating questions before continuing. The comments box is optional.';
       err.classList.remove('hidden');
       err.scrollIntoView({behavior:'smooth',block:'center'});
       return false;
@@ -234,6 +270,20 @@
     if(state.mode==='book') show('bookFirst'); else await startOnlineReading();
   });
 
+  // Chapter jump controls: only chapters within the reading text currently on screen.
+  document.addEventListener('click',async e=>{
+    const novelJump=e.target.closest('[data-reader-index]');
+    if(novelJump){
+      state.readerIndex=Number(novelJump.dataset.readerIndex);
+      await renderReaderSegment();
+      return;
+    }
+    const endingJump=e.target.closest('[data-ending-chapter]');
+    if(endingJump){
+      jumpToEndingChapter(endingJump.dataset.endingArticle,endingJump.dataset.endingNav,endingJump.dataset.endingChapter);
+    }
+  });
+
   // Online long read: full shared novel once, then first ending.
   $('#readerPrev').addEventListener('click',async()=>{
     if(state.readerIndex>0){state.readerIndex--; await renderReaderSegment();}
@@ -257,6 +307,7 @@
         if(state.mode==='book') show('bookFirst');
         else {
           $('#firstEndingText').innerHTML = await loadEnding(state.order[0]);
+          renderEndingChapterNav('#firstEndingChapterNav','firstEndingText','XXV');
           show('firstEndingOnly');
         }
       } else {
@@ -277,6 +328,7 @@
       if(state.mode==='book') show('bookSecond');
       else {
         $('#secondEndingText').innerHTML = await loadEnding(state.order[1]);
+        renderEndingChapterNav('#secondEndingChapterNav','secondEndingText','XXV');
         show('secondEnding');
       }
     } else {
@@ -314,9 +366,12 @@
   $('#postRevealContinue').addEventListener('click',()=>{
     const form=$('#postRevealForm');
     const changed=form.querySelector('input[name="changed"]:checked')?.value;
-    const missing=!answered(form,'surprise') || !changed || (changed==='yes' && !answered(form,'newPreference'));
-    if(missing){
-      $('#postRevealError').textContent='Please answer the required questions before continuing.';
+    const mainMissing=!answered(form,'surprise') || !changed;
+    const newPreferenceMissing=changed==='yes' && !answered(form,'newPreference');
+    if(mainMissing || newPreferenceMissing){
+      $('#postRevealError').textContent = mainMissing
+        ? 'Please answer both questions before continuing.'
+        : 'Please tell us which ending you prefer now before continuing.';
       $('#postRevealError').classList.remove('hidden');
       $('#postRevealError').scrollIntoView({behavior:'smooth',block:'center'}); return;
     }
@@ -335,7 +390,7 @@
       const jump=e.target.dataset.jump;
       if(jump){ if(jump==='results') renderResults(); show(jump); }
       const first=e.target.dataset.testOrder;
-      if(first){ state.mode='online'; state.order=first==='published'?['published','alternative']:['alternative','published']; buildSurveys(); await loadNovel(); $('#secondEndingText').innerHTML=await loadEnding(state.order[1]); $('#firstEndingText').innerHTML=await loadEnding(state.order[0]); show('screening'); }
+      if(first){ state.mode='online'; state.order=first==='published'?['published','alternative']:['alternative','published']; buildSurveys(); await loadNovel(); $('#secondEndingText').innerHTML=await loadEnding(state.order[1]); renderEndingChapterNav('#secondEndingChapterNav','secondEndingText','XXV'); $('#firstEndingText').innerHTML=await loadEnding(state.order[0]); renderEndingChapterNav('#firstEndingChapterNav','firstEndingText','XXV'); show('screening'); }
     });
   }
 })();
